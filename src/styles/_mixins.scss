@@ -1,0 +1,184 @@
+@use 'variables' as *; // TODO: use @use 'variables' as vars; instead
+@use 'sass:math';
+
+/* Mixins and Functions */
+
+/* ----------------------------
+PX to REM 
+---------------------------- */
+
+// Convert px to rem for a single value, like font shorthand
+@function calcRem($size) {
+  $remSize: calc($size / $base-value);
+  @return #{$remSize}rem;
+}
+
+// Convert px to rem, for multiple values, like padding
+@function strip-unit($num) {
+  @return $num / ($num * 0 + 1);
+}
+
+@mixin propRem($property, $values...) {
+  $max: length($values);
+  $remValues: '';
+
+  @for $i from 1 through $max {
+    $value: strip-unit(nth($values, $i));
+    @if $value > 0 {
+      $remValues: #{$remValues + $value/$base-value}rem;
+    } @else {
+      $remValues: #{$remValues + $value/$base-value};
+    }
+
+    @if $i < $max {
+      $remValues: #{$remValues + ' '};
+    }
+  }
+
+  #{$property}: $remValues;
+}
+
+/* ----------------------------
+Breakpoints 
+---------------------------- */
+@mixin for-small-phone-only {
+  @media (max-width: 359px) {
+    @content;
+  }
+}
+
+@mixin for-phone-only {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+@mixin for-tablet-portrait-up {
+  @media (min-width: 600px) {
+    @content;
+  }
+}
+@mixin for-tablet-portait-only {
+  @media (min-width: 600px) and (max-width: 899px) {
+    @content;
+  }
+}
+@mixin for-tablet-landscape-up {
+  @media (min-width: 900px) {
+    @content;
+  }
+}
+@mixin for-tablet-landscape-only {
+  @media (min-width: 900px) and (max-width: 1199px) {
+    @content;
+  }
+}
+@mixin for-desktop-up {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+@mixin for-desktop-only {
+  @media (min-width: 1200px) and (max-width: 1799px) {
+    @content;
+  }
+}
+@mixin for-big-desktop-up {
+  @media (min-width: 1800px) {
+    @content;
+  }
+}
+
+/* 
+----------------------------
+Margins and Grid 
+----------------------------
+*/
+//Set page margin
+@mixin page-margins($width: $default-page-width) {
+  width: $width;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// @mixin synth-module-inner-corner($color) {
+//   &::after {
+//     display: block;
+//     content: '';
+//     position: absolute;
+//     top: 100%;
+//     left: 0;
+//     width: 0.5rem;
+//     height: 0.5rem;
+//     background: radial-gradient(
+//       circle at 100% 100%,
+//       transparent 0.5rem,
+//       $color calc(0.5rem + 0.5px)
+//     ); // adding .5px in the calc smooths out a pixel-y transition;
+//   }
+// }
+
+// Update the colors for each synth module
+// @mixin synth-module-color($color) {
+//   .synthModuleContainer {
+//     border-color: $color;
+//     &::after {
+//       background: $color;
+//     }
+//   }
+
+//   .synthModuleSidebar {
+//     background: $color;
+//   }
+
+//   .synthModuleHeader {
+//     background: $color;
+//     &::after {
+//       background: radial-gradient(
+//         circle at 100% 100%,
+//         transparent 0.5rem,
+//         $color calc(0.5rem + 0.5px)
+//       ); // adding .5px in the calc smooths out a pixel-y transition;
+//     }
+//     // @include synth-module-inner-corner($color);
+//   }
+//   .synthModuleSidebar {
+//     background: $color;
+//   }
+
+//   .synthModuleControls {
+//     color: $color;
+//   }
+// }
+
+// Update the range slider colors for each synth module
+@mixin range-slider-color($fillColor, $borderColor) {
+  .synthModuleControls input[type='range']::-webkit-slider-thumb {
+    background: $fillColor;
+    border: 2px solid $borderColor;
+  }
+
+  // TODO: add moz focus?
+  .synthModuleControls input[type='range']::-moz-range-thumb {
+    background: $fillColor;
+    border: 2px solid $borderColor;
+  }
+}
+// @mixin range-slider-color($color100, $color50) {
+//   .synthModuleControls input[type='range']::-webkit-slider-runnable-track {
+//     background: $color50;
+//   }
+//   .synthModuleControls
+//     input[type='range']:focus::-webkit-slider-runnable-track {
+//     background: $color50;
+//   }
+//   .synthModuleControls input[type='range']::-webkit-slider-thumb {
+//     background: $color100;
+//   }
+//   .synthModuleControls input[type='range']::-moz-range-track {
+//     background: $color50;
+//   }
+//   // TODO: add moz focus?
+//   .synthModuleControls input[type='range']::-moz-range-thumb {
+//     background: $color100;
+//   }
+// }
