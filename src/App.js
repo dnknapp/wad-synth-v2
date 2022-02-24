@@ -1,24 +1,27 @@
+import React from 'react';
 import './App.scss';
-import logo from './logo.svg';
+//Components
+import Brain from './components/Brain'; // Where Wads are constructed
+import SynthModules from './components/SynthModules';
+import EnvelopeState from './context/envelopeContext/EnvelopeState';
+// State/Context
+import OscillatorState from './context/oscillatorContext/OscillatorState';
+import VolumeEnvelopeState from './context/volumeEnvelopeContext/VolumeEnvelopeState';
+// import Oscillators from './components/oscillators/Oscillators';
+// import VolumeEnvelope from './components/volumeEnvelope/VolumeEnvelope';
+// import Keyboard from './components/keyboard/Keyboard';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <OscillatorState>
+      <EnvelopeState>
+        {/* TODO: delete VolumeEnvelopeState once EnvelopeState works correctly */}
+        <VolumeEnvelopeState>
+          <Brain />
+          <SynthModules />
+        </VolumeEnvelopeState>
+      </EnvelopeState>
+    </OscillatorState>
   );
 }
 

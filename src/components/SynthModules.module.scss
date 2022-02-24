@@ -1,0 +1,15 @@
+// @import '../styles/variables';
+// @import '../styles/mixins';
+@use '../styles/members' as *;
+
+.mainContainer {
+  display: grid;
+  width: calc(100% - 3rem);
+  grid-template-columns: 1fr;
+  gap: 0.25rem;
+  align-items: start;
+  padding: 0;
+  @include for-tablet-portrait-up {
+    grid-template-columns: 1fr 1fr;
+  }
+}
